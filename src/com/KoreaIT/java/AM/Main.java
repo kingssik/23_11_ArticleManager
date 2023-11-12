@@ -49,23 +49,21 @@ public class Main {
         String[] cmdBits = cmd.split(" ");
         int id = Integer.parseInt(cmdBits[2]);  // "2" -> 2
 
-        Article foundArticle = null;
+        int foundIdx = -1;
         for (int i = 0; i < articles.size(); i++) {
           Article article = articles.get(i);
           if (article.id == id) {
-            foundArticle = article;
+            foundIdx = i;
             break;
           }
         }
 
-        if (foundArticle == null) {
+        if (foundIdx == -1) {
           System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+          continue;
         }
 
-        // articles.size() -> 3
-        // index : 0, 1, 2
-        // id    : 1, 2, 3
-        articles.remove(id - 1);
+        articles.remove(foundIdx);
         System.out.printf("%d번 게시물이 삭제 되었습니다\n", id);
 
       } else if (cmd.startsWith("article detail ")) {
@@ -83,12 +81,12 @@ public class Main {
 
         if (foundArticle == null) {
           System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
-        } else {
-          System.out.printf("번호 : %d\n", foundArticle.id);
-          System.out.printf("날짜 : 2023-11-12 12:12:12\n");
-          System.out.printf("제목 : %s\n", foundArticle.title);
-          System.out.printf("내용 : %s\n", foundArticle.body);
+          continue;
         }
+        System.out.printf("번호 : %d\n", foundArticle.id);
+        System.out.printf("날짜 : 2023-11-12 12:12:12\n");
+        System.out.printf("제목 : %s\n", foundArticle.title);
+        System.out.printf("내용 : %s\n", foundArticle.body);
 
       } else {
         System.out.println("존재하지 않는 명령어입니다");
