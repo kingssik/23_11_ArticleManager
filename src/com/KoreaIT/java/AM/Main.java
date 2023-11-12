@@ -23,7 +23,6 @@ public class Main {
         break;
       }
 
-
       if (cmd.equals("article write")) {
         int id = lastArticleId + 1;
         lastArticleId = id;
@@ -46,6 +45,29 @@ public class Main {
             System.out.printf("%d     |    %s\n", article.id, article.title);
           }
         }
+      } else if (cmd.startsWith("article delete ")) {
+        String[] cmdBits = cmd.split(" ");
+        int id = Integer.parseInt(cmdBits[2]);  // "2" -> 2
+
+        Article foundArticle = null;
+        for (int i = 0; i < articles.size(); i++) {
+          Article article = articles.get(i);
+          if (article.id == id) {
+            foundArticle = article;
+            break;
+          }
+        }
+
+        if (foundArticle == null) {
+          System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+        }
+
+        // articles.size() -> 3
+        // index : 0, 1, 2
+        // id    : 1, 2, 3
+        articles.remove(id - 1);
+        System.out.printf("%d번 게시물이 삭제 되었습니다\n", id);
+
       } else if (cmd.startsWith("article detail ")) {
         String[] cmdBits = cmd.split(" ");
         int id = Integer.parseInt(cmdBits[2]);  // "2" -> 2
