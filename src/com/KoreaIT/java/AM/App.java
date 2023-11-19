@@ -1,6 +1,7 @@
 package com.KoreaIT.java.AM;
 
 import com.KoreaIT.java.AM.dto.Article;
+import com.KoreaIT.java.AM.dto.Member;
 import com.KoreaIT.java.AM.util.Util;
 
 import java.util.ArrayList;
@@ -9,9 +10,11 @@ import java.util.Scanner;
 
 public class App {
   private List<Article> articles;
+  private List<Member> members;
 
   App() {
     articles = new ArrayList<>();
+    members = new ArrayList<>();
   }
 
   public void start() {
@@ -30,7 +33,44 @@ public class App {
         break;
       }
 
-      if (cmd.equals("article write")) {
+      if (cmd.equals("member join")) {
+        int id = members.size() + 1;
+        String regDate = Util.getNowDateStr();
+
+        String loginId = null;
+        while (true) {
+          System.out.print("로그인 아이디 : ");
+          loginId = sc.nextLine();
+          if (isJoinableLoginId(loginId) == false) {
+            System.out.printf("%s(은)는 사용 중인 아이디 입니다\n", loginId);
+            continue;
+          }
+          break;
+        }
+
+        String loginPw = null;
+        String loginPwCheck = null;
+        while (true) {
+          System.out.print("로그인 비밀번호 : ");
+          loginPw = sc.nextLine();
+          System.out.print("로그인 비밀번호 확인 : ");
+          loginPwCheck = sc.nextLine();
+
+          if (loginPw.equals(loginPwCheck) == false) {
+            System.out.println("비밀번호를 다시 입력하세요");
+            continue;
+          }
+          break;
+        }
+
+        System.out.print("이름 : ");
+        String name = sc.nextLine();
+
+        Member member = new Member(id, regDate, loginId, loginPw, name);
+        members.add(member);
+        System.out.printf("%d번 회원이 가입 했습니다\n", id);
+
+      } else if (cmd.equals("article write")) {
         int id = articles.size() + 1;
         String regDate = Util.getNowDateStr();
         System.out.print("제목 : ");
@@ -133,37 +173,43 @@ public class App {
     sc.close();
   }
 
+  private boolean isJoinableLoginId(String loginId) {
+    int idx = getMemberIndexByLoginId(loginId);
+    if (idx == -1) {
+      return true;
+    }
+    return false;
+  }
+
+  private int getMemberIndexByLoginId(String loginId) {
+    int i = 0; // 인덱스 정보를 저장할 변수
+    for (Member member : members) {
+      if (member.loginId.equals(loginId)) {
+        return i;
+      }
+      i++;
+    }
+
+    return -1;
+  }
+
   private int getArticleIndexById(int id) {
     int i = 0; // 인덱스 정보를 저장할 변수
-
     for (Article article : articles) {
       if (article.id == id) {
         return i;
       }
       i++;
     }
+
     return -1;
   }
 
   private Article getArticleById(int id) {
-//    for (int i = 0; i < articles.size(); i++) {
-//      Article article = articles.get(i);
-//      if (article.id == id) {
-//        return article;
-//      }
-//    }
-
-//    for (Article article : articles) {
-//      if (article.id == id) {
-//        return article;
-//      }
-//    }
-
     int idx = getArticleIndexById(id);
     if (idx != -1) {
       return articles.get(idx);
     }
-
     return null;
   }
 
