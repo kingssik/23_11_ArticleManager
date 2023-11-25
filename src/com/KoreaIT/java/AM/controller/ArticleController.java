@@ -7,13 +7,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ArticleController {
+public class ArticleController extends Controller {
   private Scanner sc;
   private List<Article> articles;
+  private String cmd;
+  private String actionMethodName;
 
   public ArticleController(Scanner sc, List<Article> articles) {
     this.articles = articles;
     this.sc = sc;
+  }
+
+  @Override
+  public void doAction(String cmd, String actionMethodName) {
+    this.cmd = cmd;
+    this.actionMethodName = actionMethodName;
+
+    switch (actionMethodName) {
+      case "write":
+        doWrite();
+        break;
+      case "list":
+        showList();
+        break;
+      case "detail":
+        showDetail();
+        break;
+      case "delete":
+        doDelete();
+        break;
+      case "modify":
+        doModify();
+        break;
+    }
   }
 
   public void doWrite() {
@@ -29,7 +55,7 @@ public class ArticleController {
     System.out.printf("%d번 글이 생성되었습니다\n", id);
   }
 
-  public void showList(String cmd) {
+  public void showList() {
     if (articles.size() == 0) {
       System.out.println("게시글이 없습니다");
       return;
@@ -63,7 +89,7 @@ public class ArticleController {
     }
   }
 
-  public void showDetail(String cmd) {
+  public void showDetail() {
     String[] cmdBits = cmd.split(" ");
     int id = Integer.parseInt(cmdBits[2]);
 
@@ -81,7 +107,7 @@ public class ArticleController {
     System.out.printf("조회 : %d\n", foundArticle.viewCnt);
   }
 
-  public void doDelete(String cmd) {
+  public void doDelete() {
     String[] cmdBits = cmd.split(" ");
     int id = Integer.parseInt(cmdBits[2]);
 
@@ -96,7 +122,7 @@ public class ArticleController {
     System.out.printf("%d번 게시물이 삭제 되었습니다\n", id);
   }
 
-  public void doModify(String cmd) {
+  public void doModify() {
     String[] cmdBits = cmd.split(" ");
     int id = Integer.parseInt(cmdBits[2]);
 
