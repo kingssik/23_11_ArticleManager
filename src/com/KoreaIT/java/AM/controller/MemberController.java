@@ -122,4 +122,11 @@ public class MemberController extends Controller {
     }
     return -1;
   }
+
+  public void makeTestData() {
+    System.out.println("회원 테스트데이터를 생성합니다");
+    members.add(new Member(1, Util.getNowDateStr(), "admin", "admin", "관리자"));
+    members.add(new Member(2, Util.getNowDateStr(), "test1", "test1", "회원1"));
+    members.add(new Member(3, Util.getNowDateStr(), "test2", "test2", "회원2"));
+  }
 }
