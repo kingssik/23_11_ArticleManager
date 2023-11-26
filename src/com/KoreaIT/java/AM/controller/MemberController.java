@@ -72,7 +72,12 @@ public class MemberController extends Controller {
     String loginId = null;
     while (true) {
       System.out.print("로그인 아이디 : ");
-      loginId = sc.nextLine();
+      loginId = sc.nextLine().trim();
+      if (loginId.length() == 0) {
+        System.out.println("로그인 아이디를 입력하세요");
+        continue;
+      }
+
       if (isJoinableLoginId(loginId) == false) {
         System.out.printf("%s(은)는 사용 중인 아이디 입니다\n", loginId);
         continue;
@@ -85,6 +90,11 @@ public class MemberController extends Controller {
     while (true) {
       System.out.print("로그인 비밀번호 : ");
       loginPw = sc.nextLine();
+      if (loginPw.length() == 0) {
+        System.out.println("로그인 비밀번호를 입력하세요");
+        continue;
+      }
+
       System.out.print("로그인 비밀번호 확인 : ");
       loginPwCheck = sc.nextLine();
 
@@ -95,8 +105,16 @@ public class MemberController extends Controller {
       break;
     }
 
-    System.out.print("이름 : ");
-    String name = sc.nextLine();
+    String name = null;
+    while (true) {
+      System.out.print("이름 : ");
+      name = sc.nextLine();
+      if (name.length() == 0) {
+        System.out.println("이름을 입력하세요");
+        continue;
+      }
+      break;
+    }
 
     Member member = new Member(id, regDate, loginId, loginPw, name);
     Container.memberDao.add(member);
