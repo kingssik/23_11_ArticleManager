@@ -120,13 +120,18 @@ public class ArticleController extends Controller {
     int id = Integer.parseInt(cmdBits[2]);
 
     int foundIdx = getArticleIndexById(id);
-
     if (foundIdx == -1) {
       System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
       return;
     }
 
-    articles.remove(foundIdx);
+    Article foundArticle = getArticleById(id);
+    if (foundArticle.memberId != loginedMember.id) {
+      System.out.println("권한이 없습니다");
+      return;
+    }
+
+    articles.remove(foundArticle);
     System.out.printf("%d번 게시물이 삭제 되었습니다\n", id);
   }
 
@@ -140,6 +145,12 @@ public class ArticleController extends Controller {
       System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
       return;
     }
+
+    if (foundArticle.memberId != loginedMember.id) {
+      System.out.println("권한이 없습니다");
+      return;
+    }
+
     System.out.print("제목 : ");
     String title = sc.nextLine();
     System.out.print("내용 : ");
